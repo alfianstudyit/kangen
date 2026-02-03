@@ -124,7 +124,7 @@
         </div>
 
         <h1>Jujur Hayoo...</h1>
-        <p>Seberapa kangen kamu sama aku sekarang?</p>
+        <p>kamu kangen ga sama akuuu faniiii?</p>
 
         <div class="btn-group">
             <button id="btn-static" onclick="kirimWA()">Kangen Buangettt ❤️</button>
@@ -133,28 +133,25 @@
         </div>
     </div>
 
-    <script>
+<script>
         const btnRunaway = document.getElementById('btn-runaway');
 
         // --- KONFIGURASI WHATSAPP ---
         function kirimWA() {
-            // 1. Ganti dengan nomor HP kamu (pake kode negara 62, jangan 08)
-            // Contoh: "6281234567890"
-            const nomorHP = "62895054424951"; 
+            // Pastikan nomor HP benar & menggunakan tanda kutip
+            const nomorHP = "6289505442485"; 
+            const pesan = "Aku kangen banget sama mbulll! ❤️";
 
-            // 2. Pesan yang otomatis tertulis
-            const pesan = "Aku kangen banget sama mbulll!";
-
-            // Membuat link WhatsApp
-            const url = `https://wa.me/${6289505442485}?text=${encodeURIComponent(pesan)}`;
+            // Menggunakan template literals dengan benar
+            const url = `https://wa.me/${nomorHP}?text=${encodeURIComponent(pesan)}`;
             
-            // Buka WhatsApp di tab baru
             window.open(url, '_blank');
         }
 
-        // --- LOGIKA TOMBOL KABUR ---
+        // --- LOGIKA TOMBOL KABUR (WITH BOUNDARY) ---
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
+        // Handler untuk HP dan Laptop
         if (isMobile) {
             btnRunaway.addEventListener('touchstart', function(e) {
                 e.preventDefault();
@@ -166,32 +163,47 @@
             });
         }
 
+        // Jaga-jaga kalau ter-klik paksa
         btnRunaway.addEventListener('click', function(e) {
             e.preventDefault();
             moveButton();
         });
 
         function moveButton() {
-            const margin = 30; // Jarak aman dari tepi layar
+            // Batas aman 50px agar tidak hilang dari pandangan/vision
+            const margin = 50; 
             const windowWidth = window.innerWidth;
             const windowHeight = window.innerHeight;
+            
             const btnWidth = btnRunaway.offsetWidth;
             const btnHeight = btnRunaway.offsetHeight;
 
+            // Kalkulasi batas maksimal agar tetap di layar
             const maxX = windowWidth - btnWidth - margin;
             const maxY = windowHeight - btnHeight - margin;
+            
+            // Kalkulasi batas minimal
             const minX = margin;
             const minY = margin;
 
-            const newX = Math.random() * (maxX - minX) + minX;
-            const newY = Math.random() * (maxY - minY) + minY;
+            // Random posisi dengan Clamp Logic
+            let newX = Math.random() * (maxX - minX) + minX;
+            let newY = Math.random() * (maxY - minY) + minY;
 
+            // Memastikan tombol tidak lari ke koordinat negatif jika layar sangat kecil
+            newX = Math.max(minX, Math.min(newX, maxX));
+            newY = Math.max(minY, Math.min(newY, maxY));
+
+            // Terapkan posisi baru
             btnRunaway.style.position = 'fixed';
             btnRunaway.style.left = newX + 'px';
             btnRunaway.style.top = newY + 'px';
+            
+            // Efek smooth agar gerakannya terlihat (tidak teleportasi)
+            btnRunaway.style.transition = 'all 0.3s ease-out';
         }
 
-        // --- ANIMASI BACKGROUND ---
+        // --- ANIMASI BACKGROUND ❤️ ---
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
@@ -202,7 +214,6 @@
             setTimeout(() => { heart.remove(); }, 5000);
         }
         setInterval(createHeart, 300);
-
     </script>
 </body>
 </html>
